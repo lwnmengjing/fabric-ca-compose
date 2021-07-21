@@ -76,6 +76,7 @@ export FABRIC_CA_CLIENT_MSPDIR=tls-msp
 export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/hyperledger/org1/peer1/assets/tls-ca/tls-ca-cert.pem
 fabric-ca-client enroll -d -u https://peer1-org1:peer1PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer1-org1
 ## mv /tmp/hyperledger/org1/peer1/tls-msp/keystore/xxxxxx_sk /tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem
+mv /tmp/hyperledger/org1/peer1/tls-msp/keystore/${(ls /tmp/hyperledger/org1/peer1/tls-msp/keystore)[0]} /tmp/hyperledger/org1/peer1/tls-msp/keystore/key.pem
 
 #Enroll Peer2
 mkdir -p /tmp/hyperledger/org1/peer2/assets/ca
@@ -93,6 +94,7 @@ export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/hyperledger/org1/peer2/assets/tls-ca/
 fabric-ca-client enroll -d -u https://peer2-org1:peer2PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer2-org1
 
 ## mv /tmp/hyperledger/org1/peer2/tls-msp/keystore/xxxxx_sk  /tmp/hyperledger/org1/peer2/tls-msp/keystore/key.pem
+mv /tmp/hyperledger/org1/peer2/tls-msp/keystore/${(ls /tmp/hyperledger/org1/peer2/tls-msp/keystore)[0]}  /tmp/hyperledger/org1/peer2/tls-msp/keystore/key.pem
 
 #Enroll Org1’s Admin
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org1/admin
@@ -127,6 +129,7 @@ export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/hyperledger/org2/peer1/assets/tls-ca/
 fabric-ca-client enroll -d -u https://peer1-org2:peer1PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer1-org2
 
 ## mv /tmp/hyperledger/org2/peer1/tls-msp/keystore/48fa5962e682c95aa53c5ce5df34d0a2786ae6cc2605529e1018de3db6f5359e_sk  /tmp/hyperledger/org2/peer1/tls-msp/keystore/key.pem
+mv /tmp/hyperledger/org2/peer1/tls-msp/keystore/${(ls /tmp/hyperledger/org2/peer1/tls-msp/keystore)[0]}  /tmp/hyperledger/org2/peer1/tls-msp/keystore/key.pem
 
 #Enroll Peer2
 mkdir -p /tmp/hyperledger/org2/peer2/assets/ca
@@ -143,6 +146,8 @@ export FABRIC_CA_CLIENT_TLS_CERTFILES=/tmp/hyperledger/org2/peer2/assets/tls-ca/
 fabric-ca-client enroll -d -u https://peer2-org2:peer2PW@0.0.0.0:7052 --enrollment.profile tls --csr.hosts peer2-org2
 
 ## mv /tmp/hyperledger/org2/peer2/tls-msp/keystore/38a0bbcc923b94c71dca66c075abf00468febcef393081adf40dcfcdd1daab02_sk  /tmp/hyperledger/org2/peer2/tls-msp/keystore/key.pem
+mv /tmp/hyperledger/org2/peer2/tls-msp/keystore/${(ls /tmp/hyperledger/org2/peer2/tls-msp/keystore)[0]}  /tmp/hyperledger/org2/peer2/tls-msp/keystore/key.pem
+
 
 #Enroll Org2’s Admin
 export FABRIC_CA_CLIENT_HOME=/tmp/hyperledger/org2/admin
