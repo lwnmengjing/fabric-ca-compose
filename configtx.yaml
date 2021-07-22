@@ -24,7 +24,7 @@ Organizations:
         ID: "org0MSP"
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: "/tmp/hyperledger/org0/ca/crypto/msp"
+        MSPDir: "/tmp/hyperledger/org0/orderer/msp"
 
 
         # Policies defines the set of policies at this level of the config tree
@@ -52,7 +52,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: "org1MSP"
 
-        MSPDir: "/tmp/hyperledger/org1/ca/crypto/msp"
+        MSPDir: "/tmp/hyperledger/org1/peer1/msp"
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -78,8 +78,6 @@ Organizations:
           # encoded in the genesis block in the Application section context
           - Host: peer1-org1
             Port: 7051
-          - Host: peer2-org1
-            Port: 7051
       
     - &org2
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -89,7 +87,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: "org2MSP"
 
-        MSPDir: "/tmp/hyperledger/org2/ca/crypto/msp"
+        MSPDir: "/tmp/hyperledger/org2/peer1/msp"
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -114,9 +112,6 @@ Organizations:
           # for cross org gossip communication.  Note, this value is only
           # encoded in the genesis block in the Application section context
           - Host: peer1-org2
-            Port: 7051
-          - Host: peer2-org2
-            Port: 7051
 
 ################################################################################
 #
