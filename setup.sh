@@ -104,11 +104,29 @@ fabric-ca-client enroll -d -u https://admin-org1:org1AdminPW@0.0.0.0:7054
 mkdir /tmp/hyperledger/org1/peer1/msp/admincerts
 cp /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem /tmp/hyperledger/org1/peer1/msp/admincerts/org1-admin-cert.pem
 
-mkdir /tmp/hyperledger/org1/peer2/msp/admincerts
-cp /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem /tmp/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
+# mkdir /tmp/hyperledger/org1/peer2/msp/admincerts
+# cp /tmp/hyperledger/org1/admin/msp/signcerts/cert.pem /tmp/hyperledger/org1/peer2/msp/admincerts/org1-admin-cert.pem
 
 #Launch Org1’s Peers
 docker-compose up -d peer1-org1
+
+cat << EOF > /tmp/hyperledger/org1/peer2/msp/config.yaml
+NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7054.pem
+    OrganizationalUnitIdentifier: orderer
+EOF
+
 docker-compose up -d peer2-org1
 sleep 4s
 
@@ -157,11 +175,28 @@ fabric-ca-client enroll -d -u https://admin-org2:org2AdminPW@0.0.0.0:7055
 mkdir /tmp/hyperledger/org2/peer1/msp/admincerts
 cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem /tmp/hyperledger/org2/peer1/msp/admincerts/org2-admin-cert.pem
 
-mkdir /tmp/hyperledger/org2/peer2/msp/admincerts
-cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem /tmp/hyperledger/org2/peer2/msp/admincerts/org2-admin-cert.pem
+# mkdir /tmp/hyperledger/org2/peer2/msp/admincerts
+# cp /tmp/hyperledger/org2/admin/msp/signcerts/cert.pem /tmp/hyperledger/org2/peer2/msp/admincerts/org2-admin-cert.pem
 
 #Launch Org2’s Peers
 docker-compose up -d peer1-org2
+
+cat << EOF > /tmp/hyperledger/org2/peer2/msp/config.yaml
+NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: peer
+  AdminOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: admin
+  OrdererOUIdentifier:
+    Certificate: cacerts/0-0-0-0-7055.pem
+    OrganizationalUnitIdentifier: orderer
+EOF
 docker-compose up -d peer2-org2
 sleep 4s
 
@@ -191,8 +226,47 @@ cp /tmp/hyperledger/org0/admin/msp/signcerts/cert.pem /tmp/hyperledger/org0/orde
 
 mv /tmp/hyperledger/org0/orderer/tls-msp/keystore/$(ls /tmp/hyperledger/org0/orderer/tls-msp/keystore) /tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem
 
+#Maks Org0 MSP
+mkdir -p /tmp/hyperledger/org0/msp/admincerts
+cp /tmp/hyperledger/org0/orderer/msp/admincerts/orderer-admin-cert.pem  /tmp/hyperledger/org0/msp/admincerts/admin-org0-cert.pem
+mkdir /tmp/hyperledger/org0/msp/cacerts
+cp /tmp/hyperledger/org0/ca/crypto/ca-cert.pem /tmp/hyperledger/org0/msp/cacerts/org0-ca-cert.pem
+mkdir /tmp/hyperledger/org0/msp/tlscacerts
+cp /tmp/hyperledger/tls/ca/crypto/tls-cert.pem /tmp/hyperledger/org0/msp/tlscacerts/tls-ca-cert.pem
+mkdir /tmp/hyperledger/org0/msp/users
+
+#Maks Org1 MSP
+mkdir -p /tmp/hyperledger/org1/msp/admincerts
+cp /tmp/hyperledger/org1/peer1/msp/admincerts/org1-admin-cert.pem  /tmp/hyperledger/org0/msp/admincerts/admin-org1-cert.pem
+mkdir /tmp/hyperledger/org1/msp/cacerts
+cp /tmp/hyperledger/org1/ca/crypto/ca-cert.pem /tmp/hyperledger/org1/msp/cacerts/org1-ca-cert.pem
+mkdir /tmp/hyperledger/org1/msp/tlscacerts
+cp /tmp/hyperledger/tls/ca/crypto/tls-cert.pem /tmp/hyperledger/org1/msp/tlscacerts/tls-ca-cert.pem
+mkdir /tmp/hyperledger/org1/msp/users
+
+#Maks Org2 MSP
+mkdir -p /tmp/hyperledger/org2/msp/admincerts
+cp  /tmp/hyperledger/org2/peer1/msp/admincerts/org2-admin-cert.pem /tmp/hyperledger/org2/msp/admincerts/admin-org2-cert.pem
+mkdir /tmp/hyperledger/org2/msp/cacerts
+cp /tmp/hyperledger/org2/ca/crypto/ca-cert.pem /tmp/hyperledger/org2/msp/cacerts/org2-ca-cert.pem
+mkdir /tmp/hyperledger/org2/msp/tlscacerts
+cp /tmp/hyperledger/tls/ca/crypto/tls-cert.pem /tmp/hyperledger/org2/msp/tlscacerts/tls-ca-cert.pem
+mkdir /tmp/hyperledger/org2/msp/users
+
+export FABRIC_CFG_PATH=${PWD}
 configtxgen -profile OrgsOrdererGenesis -outputBlock /tmp/hyperledger/org0/orderer/genesis.block -channelID syschannel
 configtxgen -profile OrgsChannel -outputCreateChannelTx /tmp/hyperledger/org0/orderer/channel.tx -channelID mychannel
 
 #Launch Orderer
 docker-compose up -d orderer1-org0
+
+cp /tmp/hyperledger/org0/orderer/channel.tx /tmp/hyperledger/org1/peer1/assets/channel.tx
+cp /tmp/hyperledger/org0/orderer/channel.tx /tmp/hyperledger/org1/peer2/assets/channel.tx
+
+#Launch Cli
+docker-compose up -d cli-org1
+docker-compose up -d cli-org2
+
+#docker exec -it cli-org1 sh
+#export CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp
+#peer channel create -c mychannel -f /tmp/hyperledger/org1/peer1/assets/channel.tx -o orderer1-org0:7050 --outputBlock /tmp/hyperledger/org1/peer1/assets/mychannel.block --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem

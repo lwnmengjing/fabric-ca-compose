@@ -218,7 +218,7 @@ services:
       - fabric-ca
   cli-org2:
     container_name: cli-org2
-    image: hyperledger/fabric-tools
+    image: hyperledger/fabric-tools:2.3
     tty: true
     stdin_open: true
     environment:
