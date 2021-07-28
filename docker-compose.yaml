@@ -16,7 +16,7 @@ services:
       - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
       - FABRIC_CA_SERVER_DEBUG=true
     volumes:
-      - /tmp/hyperledger/tls/ca:/tmp/hyperledger/fabric-ca
+      - ${PWD}/tmp/hyperledger/tls/ca:/tmp/hyperledger/fabric-ca
     networks:
       - fabric-ca
     ports:
@@ -32,7 +32,7 @@ services:
         - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
         - FABRIC_CA_SERVER_DEBUG=true
     volumes:
-        - /tmp/hyperledger/org0/ca:/tmp/hyperledger/fabric-ca
+        - ${PWD}/tmp/hyperledger/org0/ca:/tmp/hyperledger/fabric-ca
     networks:
         - fabric-ca
     ports:
@@ -48,7 +48,7 @@ services:
         - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
         - FABRIC_CA_SERVER_DEBUG=true
     volumes:
-        - /tmp/hyperledger/org1/ca:/tmp/hyperledger/fabric-ca
+        - ${PWD}/tmp/hyperledger/org1/ca:/tmp/hyperledger/fabric-ca
     networks:
         - fabric-ca
     ports:
@@ -64,7 +64,7 @@ services:
       - FABRIC_CA_SERVER_CSR_HOSTS=0.0.0.0
       - FABRIC_CA_SERVER_DEBUG=true
     volumes:
-      - /tmp/hyperledger/org2/ca:/tmp/hyperledger/fabric-ca
+      - ${PWD}/tmp/hyperledger/org2/ca:/tmp/hyperledger/fabric-ca
     networks:
       - fabric-ca
     ports:
@@ -91,7 +91,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer1
     volumes:
       - /var/run:/host/var/run
-      - /tmp/hyperledger/org1/peer1:/tmp/hyperledger/org1/peer1
+      - ${PWD}/tmp/hyperledger/org1/peer1:/tmp/hyperledger/org1/peer1
     networks:
       - fabric-ca
   peer2-org1:
@@ -117,7 +117,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1/peer2
     volumes:
       - /var/run:/host/var/run
-      - /tmp/hyperledger/org1/peer2:/tmp/hyperledger/org1/peer2
+      - ${PWD}/tmp/hyperledger/org1/peer2:/tmp/hyperledger/org1/peer2
     networks:
       - fabric-ca
   peer1-org2:
@@ -142,7 +142,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2/peer1
     volumes:
       - /var/run:/host/var/run
-      - /tmp/hyperledger/org2/peer1:/tmp/hyperledger/org2/peer1
+      - ${PWD}/tmp/hyperledger/org2/peer1:/tmp/hyperledger/org2/peer1
     networks:
       - fabric-ca
 
@@ -169,7 +169,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2/peer2
     volumes:
       - /var/run:/host/var/run
-      - /tmp/hyperledger/org2/peer2:/tmp/hyperledger/org2/peer2
+      - ${PWD}/tmp/hyperledger/org2/peer2:/tmp/hyperledger/org2/peer2
     networks:
       - fabric-ca
   orderer1-org0:
@@ -190,7 +190,7 @@ services:
       - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_DEBUG_BROADCASTTRACEDIR=data/logs
     volumes:
-      - /tmp/hyperledger/org0/orderer:/tmp/hyperledger/org0/orderer/
+      - ${PWD}/tmp/hyperledger/org0/orderer:/tmp/hyperledger/org0/orderer/
     networks:
       - fabric-ca
   cli-org1:
@@ -211,9 +211,9 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org1
     command: sh
     volumes:
-      - /tmp/hyperledger/org1/peer1:/tmp/hyperledger/org1/peer1
-      - /tmp/hyperledger/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
-      - /tmp/hyperledger/org1/admin:/tmp/hyperledger/org1/admin
+      - ${PWD}/tmp/hyperledger/org1/peer1:/tmp/hyperledger/org1/peer1
+      - ${PWD}/tmp/hyperledger/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+      - ${PWD}/tmp/hyperledger/org1/admin:/tmp/hyperledger/org1/admin
     networks:
       - fabric-ca
   cli-org2:
@@ -234,8 +234,8 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/org2
     command: sh
     volumes:
-      - /tmp/hyperledger/org2/peer1:/tmp/hyperledger/org2/peer1
-      - /tmp/hyperledger/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
-      - /tmp/hyperledger/org2/admin:/tmp/hyperledger/org2/admin
+      - ${PWD}/tmp/hyperledger/org2/peer1:/tmp/hyperledger/org2/peer1
+      - ${PWD}/tmp/hyperledger/org1/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
+      - ${PWD}/tmp/hyperledger/org2/admin:/tmp/hyperledger/org2/admin
     networks:
       - fabric-ca
